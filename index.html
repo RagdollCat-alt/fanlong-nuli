@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>虞宫·奴隶等级与待遇</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --nav-bg: #1e1e1e;
+            --card-bg: #252525;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --accent-gold: #d4af37;
+            --accent-red: #c94c4c;
+            --border-color: #333;
+            
+            /* 统一字号定义 */
+            --font-size-h2: 20px;
+            --font-size-h3: 16px;
+            --font-size-body: 15px; 
+            --line-height-body: 1.6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 60px;
+        }
+
+        /* 顶部导航 */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--nav-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            border-bottom: 1px solid #333;
+        }
+
+        .app-title {
+            text-align: center;
+            padding: 12px 0 5px 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--accent-gold);
+            letter-spacing: 1px;
+        }
+
+        .nav-scroll-container {
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 10px 15px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-scroll-container::-webkit-scrollbar { display: none; }
+
+        .nav-link {
+            display: inline-block;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 5px 12px;
+            margin-right: 8px;
+            border-radius: 15px;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            transition: all 0.2s;
+        }
+
+        .nav-link.active {
+            background: var(--accent-gold);
+            color: #000;
+            border-color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        /* 内容区 */
+        .container {
+            padding: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 120px;
+        }
+
+        h2.rank-title {
+            font-size: var(--font-size-h2);
+            color: #fff;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .rank-badge {
+            font-size: 12px;
+            background: #333;
+            color: var(--accent-gold);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--accent-gold);
+        }
+
+        .desc-box {
+            background-color: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .card h3 {
+            color: var(--accent-gold);
+            font-size: var(--font-size-h3);
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* 文本排版 */
+        p, li {
+            font-size: var(--font-size-body);
+            line-height: var(--line-height-body);
+            margin-bottom: 8px;
+            color: #dcdcdc;
+            text-align: justify;
+        }
+
+        ul { padding-left: 18px; margin-bottom: 10px; }
+        
+        .highlight { color: var(--accent-gold); font-weight: bold; }
+        .danger { color: var(--accent-red); }
+        .sub-text { color: #888; font-size: 14px; margin-top: 5px; display: block;}
+
+        /* 特殊等级配色 */
+        .theme-red h2.rank-title { border-left-color: var(--accent-red); }
+        .theme-red .rank-badge { color: var(--accent-red); border-color: var(--accent-red); }
+        .theme-red .card h3 { color: var(--accent-red); }
+
+        .footer-note {
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+
+<header class="sticky-header">
+    <div class="app-title">虞宫 · 奴隶等级与待遇</div>
+    <nav class="nav-scroll-container">
+        <a href="#overview" class="nav-link">项圈介绍</a>
+        <a href="#private" class="nav-link">私奴</a>
+        <a href="#attendant" class="nav-link">侍奴</a>
+        <a href="#contract" class="nav-link">契奴</a>
+        <a href="#public" class="nav-link">公奴</a>
+        <a href="#sin" class="nav-link" style="color:#ff8888">罪奴</a>
+        <a href="#livestock" class="nav-link" style="color:#ff8888">畜奴</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section id="overview">
+        <h2 class="rank-title" style="border-color: #fff;">项圈内置芯片功能 <span class="rank-badge" style="color:#fff; border-color:#fff;">Chipset</span></h2>
+        <div class="card">
+            <ul>
+                <li>① 精准定位及指定活动范围</li>
+                <li>② 佩戴者/项圈异常报警及监听</li>
+                <li>③ 电击功能</li>
+                <li>④ 通讯及核对录入个人信息</li>
+                <li>⑤ 健康监测</li>
+                <li class="danger">⑥ 强制窒息（侍奴及以上等级配备，替换电击使用。）</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="private">
+        <h2 class="rank-title">私奴 <span class="rank-badge">Private</span></h2>
+        
+        <div class="desc-box">
+            <p>私人专属的奴隶。新贵及以上的世家子弟可拥有。每人仅可拥有一个。</p>
+            <p>负责贴身打理主人的一切生活起居及个人需求。既是贴身床伴，也是私人智囊，深得主人信任。</p>
+            <p>各家族家主的私奴可以兼任管家/执事，负责管理整个家族的内务。</p>
+            <p class="highlight">★虞家家主的私奴地位高于包括内庭在内的所有奴隶之上，担任侍官长一职，负责处理所有内庭事务及所有非政治类社交。</p>
+            <p class="danger">★【罪奴籍】不得晋升私奴。</p>
+        </div>
+
+        <div class="card">
+            <h3>晋升条件</h3>
+            <ul>
+                <li>① 户籍为【奴籍】。</li>
+                <li>② 是该主位的专属侍奴。</li>
+                <li>③ 【智力】不得低于60。</li>
+                <li>④ 不曾有重大过错。</li>
+                <li>⑤ 在【训御司】入训留档。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>晋升流程</h3>
+            <ul>
+                <li>① 报备【训御司】进行资格审核（戏内表现为写训御戏）。</li>
+                <li>② 审核通过后进行体检。</li>
+                <li>③ 制定专属项圈进行更换。</li>
+                <li>④ 拍照入档封存。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>服饰</h3>
+            <ul>
+                <li>① 衣着按家族品级和主人穿搭，无额外限制。社交场合有专属礼服。</li>
+                <li>② 佩戴印有：<br>
+                    1、家族家徽的专属项圈（各家主/少主私奴）。<br>
+                    2、主人名字末位字的项圈（其余人）</li>
+                <li>③ 四季服饰由主人家族负责采买。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>饮食</h3>
+            <ul>
+                <li>① 一日两餐制：两菜一汤一主食，每日餐后甜品一份，一周三顿水果。<br>
+                <span class="sub-text">两菜：一荤一素。可依据私奴口味定制点餐。</span></li>
+                <li>② 加餐：可吃主人的剩食。</li>
+                <li>③ 逢重大节日若无要务，可外出就餐一次。（不可累计）</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>住所</h3>
+            <p>拥有独立居住房间，两室一厅一卫，位于主人房间旁侧。室内分为办公区与休息区。</p>
+            <p>休息区配有双人床、矮几、餐桌、座椅与置物柜，以及独立洗浴区。</p>
+            <p>办公区内置小型书架、微吧茶饮区、办公桌、投影设备及器具放置与展示柜。</p>
+            <p>室内常年恒温，书架后有暗门与主人房间连通。</p>
+            <p>每日晨起与晚歇时各清理一次身体。</p>
+            <p>配有两位契奴伺候起居。</p>
+        </div>
+
+        <div class="card">
+            <h3>权利待遇</h3>
+            <ul>
+                <li>① 可随其主人出席正式社交场所。</li>
+                <li>② 各家家主的私奴具有管辖家族内所有奴隶的权限。</li>
+                <li>③ 虞家家主的私奴具有听政权。</li>
+                <li>④ 可受家族等级低两级的主位拜见。</li>
+                <li>⑤ 所有私奴皆可奉令独自外出。</li>
+                <li>⑥ 不得参政。</li>
+                <li>⑦ 免费医疗。</li>
+                <li>⑧ 室内居住。</li>
+                <li>⑨ 初罪豁免。</li>
+                <li>⑩ 罪奴及以下的身体使用权、处置权</li>
+                <li>⑪ 侍奴及以下等级的惩戒权（非重大损伤类）。</li>
+                <li>⑫ 家族内侍奴及以下的处置权。（非重大损伤类）。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>日常规矩</h3>
+            <ul>
+                <li>① 直立行走。</li>
+                <li>② 仅听从其主人命令。</li>
+                <li>③ 与主人荣辱一体。</li>
+                <li>④ 私奴终生不得脱离家族。</li>
+                <li>⑤ 每日自主灌肠清洁。</li>
+                <li>⑥ 每日沐浴次数不限。</li>
+                <li>⑦ 每三日一次身体保养美容/主人亲自养护。</li>
+                <li>⑧ 无固定间休时间。</li>
+                <li>⑨ 每日身体锻炼。</li>
+                <li>⑩ 无婚姻自主权。</li>
+                <li>⑪ 每六个月需前往【训御司】复训及核验身份。</li>
+                <li>⑫ 若家主无伴侣，可享有等同伴侣的待遇。</li>
+                <li>⑬ 私奴可担任侍官长/管家/执事一职，其中管家/执事反之不可为私奴。</li>
+                <li>⑭ 无重大过错不得废弃。被废弃的私奴，强制降为罪奴，充公使用，终生不晋升。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>礼节</h3>
+            <ul>
+                <li>① 面对主人的询问须鞠躬聆听。</li>
+                <li>② 随时做好在任何场所任何地点跪侍的准备。</li>
+                <li>③ 向与主人平级的主位躬身问安。</li>
+                <li>④ 向比主人高级的主位跪安。</li>
+                <li>⑤ 向比主人高级的主位私奴问安。</li>
+                <li>⑥ 接受比主人家族等级低两级及以上的主位问安。</li>
+                <li>⑦ 正式社交所必须的所有礼节。</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="attendant">
+        <h2 class="rank-title">侍奴 <span class="rank-badge">Attendant</span></h2>
+        
+        <div class="desc-box">
+            <p>私有奴隶，地位仅次于私奴。负责解决主人的各项生理需求，受私奴领导管理。</p>
+            <p>各家族侍奴按家族及主人等级分类。</p>
+            <p class="highlight">★虞宫侍奴专供所有权贵及虞姓使用。</p>
+        </div>
+
+        <div class="card">
+            <h3>晋升条件</h3>
+            <ul>
+                <li>① 户籍为【奴籍】</li>
+                <li>② 等级为契奴/公奴。</li>
+                <li>③ 契奴双亲都非【罪奴籍】，仅可允许一方为罪奴/曾为罪奴。</li>
+                <li>④ 【颜值】不得低于50。（颜值低于50，需走剧情戏指名，要求剧情完整）。</li>
+                <li>⑤ 在【训御司】入训留档。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>晋升流程</h3>
+            <ul>
+                <li>① 报备【训御司】进行资格审核（无需写戏）。</li>
+                <li>② 审核通过后进行体检。</li>
+                <li>③ 更换该等级项圈。</li>
+                <li>④ 向主人及其所属家族提交记录有详细身体信息的身份卡，重置芯片。</li>
+                <li>⑤ 拍照入档封存。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>服饰</h3>
+            <ul>
+                <li>① 常服为轻纱白袍，外穿同色罩衣。可穿内衣。社交场合统一穿白色西装，内搭的衬衣及领结等饰品按主人等级穿戴。</li>
+                <li>② 佩戴白色真皮项圈，项圈下坠银色铭牌。</li>
+                <li>③ 每季更换同款式的新衣服。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>饮食</h3>
+            <ul>
+                <li>① 一日两餐制：两菜一汤一主食，每周餐后甜品一份，一周一顿水果。</li>
+                <li>两菜：一荤一素。每周定食，不可定制点餐。</li>
+                <li>② 逢大型节庆，可加甜品一份，节日当日加餐一顿。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>住所</h3>
+            <p>由各家族统管，双人公寓制套房，内置单人床、沙发、餐桌、置物柜每人各一，薄厚寝具各两套，由各家族统一制式。</p>
+            <p>每个公寓内设立共用卫浴与晾衣区，配有室内制冷与供暖装置。</p>
+            <p>每人配备一名契奴照顾起居及监督训练。</p>
+        </div>
+
+        <div class="card">
+            <h3>权利待遇</h3>
+            <ul>
+                <li>① 免费医疗。</li>
+                <li>② 室内居住。</li>
+                <li>③ 初罪豁免。</li>
+                <li>④ 可作为陪侍，随其主人出席正式社交场所。</li>
+                <li>⑤ 可直立行走。</li>
+                <li>⑥ 罪奴及以下的身体使用权。</li>
+                <li>⑦ 契奴及以下等级的惩戒权（非重大损伤类）。</li>
+                <li>⑧ 家族内契奴的处置权。（非重大损伤类）。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>日常规矩</h3>
+            <ul>
+                <li>① 侍奴可被转赠。</li>
+                <li>② 正式社交场合须佩戴止咬器。</li>
+                <li>③ 仅听从其主人及其私奴的命令。</li>
+                <li>④ 与主人荣辱一体。</li>
+                <li>⑤ 每月应召服侍，仅在有服侍需求时清洁身体及灌肠。</li>
+                <li>⑥ 每日午休，每次二小时。</li>
+                <li>⑦ 每月全身保养美容三次。</li>
+                <li>⑧ 每周沐浴两次，时间自定。</li>
+                <li>⑨ 每周四次身体锻炼。</li>
+                <li>⑩ 无婚姻自主权。</li>
+                <li>⑪ 每季度需前往【训御司】复训及核验身份。</li>
+                <li>⑫ 每季度可申请外出两次，每次五小时。外出时须穿着符合其主人家族等级的服饰。</li>
+                <li>⑬ 若有重大立功，可申请脱离其主人及其家族，身份改为契奴，重归【训御司】管辖（如举报谋逆）。</li>
+                <li>⑭ 无重大过错，但被废弃的侍奴，可回归其原有奴隶等级，等待再次晋升。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>礼节</h3>
+            <ul>
+                <li>① 侍奉使用跪侍礼。</li>
+                <li>② 行进时，身位不得超过私奴的位置。若无私奴在场，则须后于主人半个身位。</li>
+                <li>③ 向与主人平级的主位跪安。</li>
+                <li>④ 向比主人高级的主位跪安。</li>
+                <li>⑤ 向比主人高级的主位私奴跪安。</li>
+                <li>⑥ 正式社交所必须的所有礼节。</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="contract">
+        <h2 class="rank-title">契奴 <span class="rank-badge">Contract</span></h2>
+        
+        <div class="desc-box">
+            <p>由公奴晋升，行走于外庭的常见奴隶。</p>
+            <p>常见为:<br>
+                ①考评优异或得贵人欣赏的公奴晋升。<br>
+                ②由公奴或罪奴配种诞下的后代或自愿卖身的平民及犯错的内庭官侍。</p>
+            <p>负责外庭的日常伺候及所有贵族和官职人员的需求纾解</p>
+            <p class="highlight">★配种生下的契奴为死契，不得晋升私奴。犯错的内庭宫侍，不得晋升侍奴。</p>
+            <p class="highlight">★须定期去各家族轮值。</p>
+        </div>
+
+        <div class="card">
+            <h3>晋升条件</h3>
+            <ul>
+                <li>① 户籍为【奴籍】。</li>
+                <li>② 等级为公奴。</li>
+                <li>③ 配种所生，父母一方为畜奴的不得晋升。</li>
+                <li>④ 在【训御司】入训留档。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>晋升流程</h3>
+            <ul>
+                <li>① 报备【训御司】进行资格审核（无需写戏）。</li>
+                <li>② 审核通过后进行体检。</li>
+                <li>③ 更换该等级项圈。</li>
+                <li>④ 提交记录有详细身体信息及家世的身份卡，制作相应芯片。“死契”契奴同时需在颈后填埋对应芯片。</li>
+                <li>⑤ 拍照入档封存。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>服饰</h3>
+            <ul>
+                <li>① 常年穿素色布衣，不可穿内衣。</li>
+                <li>② 佩戴深蓝色真皮项圈，项圈下坠黄铜铭牌，写明自身姓名及年岁。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>饮食</h3>
+            <ul>
+                <li>① 一日两餐制：一菜一汤一主食，每月轮换一次菜谱。</li>
+                <li>② 逢大型节庆可吃一次水果，加荤菜一道。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>住所</h3>
+            <p>由【训御司】统管。</p>
+            <p>若指派到各家族，则由各家族的家主私奴代管。</p>
+            <p>多人同住，睡通铺，室内配备长桌一张及与居住人数相等的固定座椅及诫具收纳箱。每人配备厚薄两床寝具。每月统一发放生活用品，公共卫浴。</p>
+        </div>
+
+        <div class="card">
+            <h3>权利待遇</h3>
+            <ul>
+                <li>① 免费医疗。</li>
+                <li>② 室内居住。</li>
+                <li>③ 初罪豁免。</li>
+                <li>④ 定量承欢（每日三人）。</li>
+                <li>⑤ 每月可休假四天（轮休）。</li>
+                <li>⑥ 罪奴及以下的身体使用权。</li>
+                <li>⑦ 公奴及以下等级的惩戒权。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>日常规矩</h3>
+            <ul>
+                <li>① 可直立随侍，侍奉接待需跪立。</li>
+                <li>② 仅在外庭或和家族内部活动。</li>
+                <li>③ 每日灌肠一次。</li>
+                <li>④ 每日定点定时排泄三次。</li>
+                <li>⑤ 每日午休，每次一小时。</li>
+                <li>⑥ 每周全身保养美容一次。</li>
+                <li>⑦ 每周沐浴两次，时间自定。</li>
+                <li>⑧ 每周两次身体锻炼。</li>
+                <li>⑨ 每月定期体检及前往【训御司】复训。</li>
+                <li>⑩ 工作期间不得排泄（8点至21点）。</li>
+                <li>⑪ 除亲眷丧葬，不得申请外出。死契终生不得出。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>礼节</h3>
+            <ul>
+                <li>① 仅对虞姓及外庭在职人员行礼。日常礼为鞠躬礼。</li>
+                <li>② 接待时为双膝分立而跪，伏拜后亲吻其胯部，并询问是否可以开始服侍。</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="public">
+        <h2 class="rank-title">公奴 <span class="rank-badge">Public</span></h2>
+        
+        <div class="desc-box">
+            <p>包括外庭在内的所有公共场所中随处可见的公用奴隶。负责疏解所有【公民籍】的欲望。也用作配种使用及对获罪贵族的羞辱。</p>
+            <p>其子嗣生而为奴，长相优越的可分配为契奴。</p>
+            <p>获取方式:<br>
+                ①公奴/罪奴配种生下的子嗣。<br>
+                ②强制征召进入虞宫的平民。<br>
+                ③通过“青诫”考入虞宫受训。</p>
+            <p class="highlight">★须定期去各家族轮值。</p>
+        </div>
+
+        <div class="card">
+            <h3>晋升条件</h3>
+            <ul>
+                <li>① 户籍为【奴籍】/【公民籍】。</li>
+                <li>② 无重大过错。</li>
+                <li>③ 身体健全，无长期疾病。</li>
+                <li>④ 在【训御司】入训留档。</li>
+            </ul>
+            <p class="danger" style="margin-top:10px; font-weight:bold;">【罪奴籍】晋升，还需满足：</p>
+            <ul>
+                <li>① 仅限罪奴等级。</li>
+                <li>② 有重大立功，身体清白。</li>
+                <li>③ 直系亲属非【罪奴籍】/仅一方为罪奴。</li>
+                <li>★非【罪奴籍】的罪奴晋升条件等同。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>晋升流程</h3>
+            <ul>
+                <li>① 报备【训御司】进行资格审核（戏内表现为入群审核）。</li>
+                <li>② 审核通过后进行体检。</li>
+                <li>③ 定户籍，制定记录有详细身体信息、家世、户籍信息的身份卡，制作相应芯片。</li>
+                <li>④ 录入信息，制作项圈。</li>
+                <li>⑤ 拍照入档封存。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>服饰</h3>
+            <ul>
+                <li>① 裸露腹部及四肢，胸部及生殖部位以紧贴身体的黑色胸带和三角T型裤遮蔽。</li>
+                <li>② 佩戴黑色项圈。</li>
+                <li>③ 无使用时，后穴全天佩戴扩张器（棒状）。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>饮食</h3>
+            <ul>
+                <li>① 每日晚食制，一日一餐：一菜一主食，定时定量，统一用餐。随季节轮换菜谱。</li>
+                <li>② 每日早晨提供能量液一袋。</li>
+                <li>③ 逢大型节庆可添节日特色食饮一份。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>住所</h3>
+            <p>由【训御司】统管。</p>
+            <p>每日于指定地点将身体固定在探出于墙壁的洞穴床板上，俯趴或仰躺睡觉。</p>
+            <p>将头部与臀腿部分暴露在外，填塞保养油及相应器具。在保养与休息的同时，兼顾夜间被使用时的便捷。</p>
+        </div>
+
+        <div class="card">
+            <h3>权利待遇</h3>
+            <ul>
+                <li>① 免费医疗。</li>
+                <li>② 每月可休假四天（轮休）。</li>
+                <li>③ 罪奴及以下的身体使用权。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>日常规矩</h3>
+            <ul>
+                <li>① 伏跪爬行。</li>
+                <li>② 仅可在限制范围内活动。</li>
+                <li>③ 每日早晚灌肠及全身清洁。</li>
+                <li>④ 每日定点定时排泄三次。</li>
+                <li>⑤ 每周全身保养美容一次。</li>
+                <li>⑥ 每周两次身体锻炼。</li>
+                <li>⑦ 每月定期体检及前往【训御司】复训。</li>
+                <li>⑧ 固定时限内不得拒绝被使用（6点至23点）。</li>
+                <li>⑨ 休息日可申请限时外出，每年五次，每次三小时。</li>
+                <li>⑩ 外出时允许穿简单服饰，直立行走。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>礼节</h3>
+            <ul>
+                <li>日常爬行，对所有进入外庭的非【奴籍】伏跪问安，不得拒绝任何需要被服侍的请求，并负责后续清理工作及致谢。</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="sin" class="theme-red">
+        <h2 class="rank-title">罪奴 <span class="rank-badge">Sin/Criminal</span></h2>
+        
+        <div class="desc-box">
+            <p>罪奴多为被贬黜/废弃的公奴及获罪者。日常负责所有奴隶的清洁杂役工作丶配种及解决所有【公民籍】及【奴籍】的生理需求。</p>
+            <p>其中，解决所有奴籍的生理需求为【罪奴籍】的工作。但非【罪奴籍】也可进行除插入动作外的所有事情。</p>
+            <p class="highlight">★负责虞宫内外的脏活清扫，如厕所、畜笼等脏活。</p>
+            <p>无晋升方式。</p>
+        </div>
+
+        <div class="card">
+            <h3>服饰</h3>
+            <ul>
+                <li>① 无衣着服饰。</li>
+                <li>② 无项圈，佩戴金属电击茎环。（定期更换）。</li>
+                <li>③ 强制于右臀烙印有其家徽或姓氏的“罪”字标识。</li>
+                <li class="danger">★若为【罪奴籍】，则“罪”字要烙在脸上。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>饮食</h3>
+            <ul>
+                <li>① 每日一餐。以内庭每日所食的剩食为餐。</li>
+                <li>若无剩餐，则发放标准配比的营养液。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>住所</h3>
+            <p>由【训御司】统管，睡觉时统一于露天圈养区拘锁四肢，铁链锁扣项圈，做婴抱式并排紧贴着俯趴于草席上，确保后臀烙印清晰可见，臀内及尿口内置定时电击装置，每三个小时启动一次，一次持续15分钟，每晚两次。</p>
+        </div>
+
+        <div class="card">
+            <h3>权利待遇</h3>
+            <ul>
+                <li>①【奴籍】罪奴：基本人身安全及生命保障。</li>
+                <li class="danger">②：【罪奴籍】罪奴：无任何权利</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>日常规矩</h3>
+            <ul>
+                <li>① 伏跪爬行，沐浴时可直立。</li>
+                <li>② 每日高压水枪清洗身体。</li>
+                <li>③ 每周定时沐浴一次。</li>
+                <li>④ 每日定时排泄两次，过时不候。</li>
+                <li>⑤ 全天佩戴尿道棒，劳作期休息超过三分钟自动开启高电流电击，每次持续五分钟。</li>
+                <li>⑥ 仅享有维持其高强度劳作所需的最低能量配给。</li>
+                <li>⑦ 严禁离开指定的监区和劳作地点。</li>
+                <li>⑧ 每季度会当众重新宣读罪行，进行公开训御，直至脱离罪奴身份。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>礼节</h3>
+            <ul>
+                <li>对所有来使用它的人阐明身份及罪行，并对想要使用它的行为伏跪致谢，结束之后跪拜送行。</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="livestock" class="theme-red">
+        <h2 class="rank-title">畜奴 <span class="rank-badge">Livestock</span></h2>
+        
+        <div class="desc-box">
+            <p>畜奴为牲畜纾解欲望的奴隶，但常有重口味的人来这里使用它们，奴隶中最底端的存在。自公奴起，可直接被贬黜为畜奴。是所有被贬黜的奴隶及获罪者最后可存活的归处。</p>
+            <p class="danger">★畜奴全部为【罪奴籍】。不得晋升。</p>
+        </div>
+
+        <div class="card">
+            <h3>服饰</h3>
+            <ul>
+                <li>① 无衣着服饰，绝育化处理。（阉割猫狗的那种绝育）。</li>
+                <li>② 统一佩戴铁质项圈、电击茎环。</li>
+                <li>③ 强制左臀处烙印“畜”字样，若为罪奴下堕而来，则右臀纹样见【罪奴】服饰详情。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>饮食</h3>
+            <ul>
+                <li>① 每日一餐。以所有奴隶食用的剩饭及排泄物为食。</li>
+                <li>② 以使用者的发泄物为食。</li>
+                <li>若无剩餐，则今日无食。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>住所</h3>
+            <p>由【畜笼】统管，每日凌晨三点至早六点为固定休息时间，休息总时长为三个小时。由畜笼管理人员集中清理后，锁进半人高的金属笼内休息。</p>
+        </div>
+
+        <div class="card">
+            <h3>权利待遇</h3>
+            <p>无任何权利。</p>
+        </div>
+
+        <div class="card">
+            <h3>日常规矩</h3>
+            <p>由所属机构畜笼统一进行管理。</p>
+            <ul>
+                <li>① 终生不得直立行走。</li>
+                <li>② 每日高压水枪灌洗身体。</li>
+                <li>③ 严禁离开畜笼管理区。</li>
+                <li>④ 21小时无间断接待，不限物种。</li>
+                <li>⑤ 无固定饮食保障。</li>
+                <li>⑥ 无排泄权，排泄需当众。</li>
+                <li>⑦ 无婚配权，雄性畜奴会被绝育。</li>
+                <li>⑧ 无人权。</li>
+                <li>⑨ 无医疗权。</li>
+                <li>⑩ 拒绝接待或重病/伤，会关入仅容成年犬只进入的矮笼中监禁，断食断水。</li>
+                <li>⑪ 因使用过程造成畜奴死亡，使用者仅需赔偿管理费，费用为5虞币。</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>礼节</h3>
+            <ul>
+                <li>毫无保留展示身体，请求被使用。</li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="footer-note">
+        ★★★除罪奴与畜奴外，其它均为最低执行标准。若收归私有，则待遇可按实际改善。（过于高调或离经叛道的行事会影响名誉波动）
+    </div>
+
+</main>
+
+<script>
+    document.querySelectorAll('.nav-link').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+</script>
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id:"3Ozki6YJQMu3rJ7a",ck:"3Ozki6YJQMu3rJ7a"})</script>
+
+</body>
+</html>
